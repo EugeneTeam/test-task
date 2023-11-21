@@ -11,6 +11,12 @@ export class CitiesService {
   async getCities(search?: string): Promise<CitiesListResponse> {
     const rows = await this.citiesRepository.getCities(search);
 
+    const data = this.transformData(rows);
+
+    return data;
+  }
+
+  private transformData(rows): CitiesListResponse {
     const cities_population: CitiesPopulationResponse[] = [];
     const city_members: CitiesMembersResponse[] = [];
 
@@ -44,6 +50,6 @@ export class CitiesService {
     return {
       cities_population,
       city_members,
-    };
+    }
   }
 }

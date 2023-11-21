@@ -5,6 +5,8 @@ import { Pool } from 'pg';
 export class CitiesRepository {
   constructor(@Inject('CONNECTION') private readonly pg: Pool) {}
 
+  // Индекс добавил для поля cities->name который участвует в группировке
+  // Индекс добавил для поля residents->city_id для улучшения связей при операции JOIN
   async getCities(search: string): Promise<any[]> {
     const client = await this.pg.connect();
 
@@ -21,7 +23,8 @@ export class CitiesRepository {
       GROUP BY cities.name, residents.first_name
       ;
       `,
-        search ? [`%${search}%`] : []);
+        search ? [`%${search}%`] : [],
+      );
 
       return result.rows;
     } finally {
