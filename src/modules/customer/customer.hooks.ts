@@ -13,6 +13,10 @@ export class CustomerHooks {
     if (!customer) return;
 
     await this.makeAnonymized([customer]);
+
+    await CustomersAnonymised.deleteOne({
+      email: customer.email,
+    });
   }
 
   private async makeAnonymized(customers: ICustomer[]): Promise<void> {
